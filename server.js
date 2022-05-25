@@ -10,7 +10,7 @@ const db = knex({
     port: 5432,
     user: "postgres",
     password: "Kevthebest12@",
-    database: "trello-clone",
+    database: "keyboard",
     idleTimeoutMillis: 0,
     connectionTimeoutMillis: 0,
   },
@@ -19,14 +19,22 @@ const db = knex({
 app.use(express.json());
 app.use(cors());
 
-app.post("/createList", (req, res) => {
-  const { pid, title } = req.body;
+app.post("/addLeader", (req, res) => {
+  const { username, total, datetotal } = req.body;
 
-  db("list")
+  db("leaderboard")
     .insert({
-      pid: pid,
-      title: title,
+      username: username,
+      total: total,
+      datetotal: datetotal,
     })
-    .returning("lid")
     .then((resp) => res.json(resp[0]));
+});
+
+app.get("/", (req, res) => {
+  res.send("it is working!");
+});
+
+app.listen(process.env.PORT || 3001, () => {
+  console.log("We are listening");
 });
